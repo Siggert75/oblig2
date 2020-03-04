@@ -213,6 +213,7 @@ print(lessthan7-lessthan2)
 
 
 \subsection{Hypergeometrisk:X~hyp(20,30,80). Lag tabell over sannsynligheter forx=0,....,20, og plott både pdf og CDF for denne sannsynlighetsfordelingen.}
+\subsubsection{Her er tabell og plot for PDF:}
 ```{r}
 hypery_pdf = dhyper(x, 30, 50, 20)
 
@@ -222,6 +223,19 @@ hyperydf_pdf
 ```
 ```{r}
 ggplot(data=hyperydf_pdf, aes(x=x, y=hypery_pdf)) +
+  geom_bar(stat="identity", fill="blue") +
+  labs(x = "Count", y = "Sannsynlighet")
+```
+\subsubsection{Her er tabell og plot for CDF:}
+```{r}
+hypery_cdf = phyper(x, 30,50,20)
+
+hyperydf_cdf = data.frame(x, hypery_cdf)
+
+hyperydf_cdf
+```
+```{r}
+ggplot(data=hyperydf_cdf, aes(x=x, y=hypery_cdf)) +
   geom_bar(stat="identity", fill="blue") +
   labs(x = "Count", y = "Sannsynlighet")
 ```
@@ -237,7 +251,8 @@ E[X] = `r sum(x*hypery_pdf)`
 \subsubsection{Var(X)}
 For å finne var(X) kjører vi bare følgende R-kode
 ```{r eval=FALSE}
-var(x)
+p=30/80
+var_x = 20*p*(1 - p)*(30+50-20)/(30+50-1)
 ```
 
 Var(X) = `r var(x)`
@@ -251,6 +266,27 @@ lessthan2 = phyper(1,30,50,20)
 
 print(lessthan7-lessthan2)
 ```
+
+
+
+\subsection{X~Betab(3a,5a,20)for a= 2. Lag tabell over sannsynligheter for x= 0,....,20, og regn deretter ut E[X],Var(X), ogP(2 < X < 7). Plott både pdf og CDF for disse sannsynlighetsfordelingene, meda= 1,a= 2,a= 4, og a= 10, og sammenlign medtilsvarende plott for bin(20,0.375)}
+\subsubsection{Her er tabell og plot for PDF:}
+```{r}
+library(extraDistr)
+
+betabinomy_pdf = dbbinom(x, 20, 3, 5)
+
+betabinomy_df_pdf = data.frame(x, betabinomy_pdf)
+
+betabinomy_df_pdf
+```
+```{r}
+ggplot(data=betabinomy_df_pdf, aes(x=x, y=betabinomy_pdf)) +
+  geom_bar(stat="identity", fill="blue") +
+  labs(x = "Count", y = "Sannsynlighet")
+```
+
+
 
 
 
