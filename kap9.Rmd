@@ -23,15 +23,76 @@ Fordi når X er kontinuerlig så kan aldri sannsynligheten være eksakt på et p
 \subsection{c) Hvorfor kan vi ikke regne med P(X < c) = P(X <= c) når X er diskret? (Hvorfor vil de for det meste være forskjellige?)}
 
 Fordi når X er diskret så kan vi ha en sannsynlighet i punktet c som ikke er lik den totale sannsynligheten mindre enn c.
-
-\subsection{d) For hånd: 1e (en: 2e)}
-
-\subsection{e) For hånd: 2b (en: 3b)}
-
+\newpage
+\subsection{d) For hånd: 1e (en: 2e) SE UNDER}
+\newpage
+\subsection{e) For hånd: 2b (en: 3b) SE UNDER}
+\newpage
 \subsection{f) Gjør i R: 1e (en: 2e)}
+```{r}
+
+values = c(2, 3, 4, 5, 6, 7, 8)
+probs = c(1/16, 2/16, 3/16, 4/16, 3/16, 2/16, 1/16)
+
+plot(seq(2, 8, 1), probs, type="h", xlab="Terning verdi", ylab="Sannsynlighet")
+
+eX = 0
+for (i in 1:length(values)) {
+  eX = eX + values[i] * probs[i]
+}
+
+eX2 = 0
+for (i in 1:length(values)) {
+  eX2 = eX2 + values[i]^2 * values[i]
+}
+
+varX = eX2 - eX^2
+sigma = sqrt(varX)
+tauX = 1/(sigma^2)
+```
+E[X] = 5  
+
+var(X) = 2.5  
+
+sigma = 1.581139  
+
+tau = 0.4  
 
 \subsection{g) Gjør i R: 2b (en: 3b)}
+```{r}
 
+values = c(1, 2, 3, 4)
+probs = c(1/10, 2/10, 3/10, 4/10)
+
+muX = 0
+for (i in values) {
+  muX = muX + values[i] * probs[i]
+}
+
+eX2 = 0
+for (i in values) {
+  eX2 = eX2 + values[i]^2 * probs[i]
+}
+
+varX = eX2 - muX^2
+sigma = sqrt(varX)
+tau = 1 / (sigma^2)
+
+pXeM = probs[1] + probs[4]
+```
+µx = 3  
+
+var(X) = 1  
+
+sigma = 1  
+
+tau = 1  
+
+P(X elementin M) = 0.5  
+
+
+
+\newpage
 \section{Kapittel 9}
 
 \subsection{a) X~bin(20,0.375). Lag tabell over sannsynligheter for x= 0,....,20, og plott både pdf og CDF for denne sannsynlighetsfordelingen.}
@@ -71,18 +132,18 @@ ggplot(data=df_cdf, aes(x=x, y=y_cdf)) +
 Vi summerer opp hver count ganget med sannsynligheten for å finne E[X]
 
 ```{r eval=FALSE}
-sum(x*0.375)
+sum(x*y)
 ```
 
-E[X] = `r sum(x*0.375)`
+E[X] = `r sum(x*y)`
 
 \subsubsection{Var(X)}
 For å finne var(X) kjører vi bare følgende R-kode
-```{r eval=FALSE}
-var(x)
+```{r}
+ex = (sum(x^2*y)-(sum(x*y))^2)
 ```
 
-Var(X) = `r var(x)`
+Var(X) = `r ex`
 
 \subsubsection{P(2 < X < 7)}
 
@@ -103,14 +164,14 @@ print(lessthan7-lessthan2)
 ```{r}
 x = c(0:20)
 
-y = dnbinom(x, 3, 0.3)
+negativb_y = dnbinom(x, 3, 0.3)
 
 nbdf_pdf = data.frame(x, y)
 
 nbdf_pdf
 ```
 ```{r bar plotterino2}
-ggplot(data=nbdf_pdf, aes(x=x, y=y)) +
+ggplot(data=nbdf_pdf, aes(x=x, y=negativb_y)) +
   geom_bar(stat="identity", fill="blue") +
   labs(x = "Count", y = "Sannsynlighet")
 ```
@@ -128,21 +189,21 @@ ggplot(data=nbdf_cdf, aes(x=x, y=nby_cdf)) +
   labs(x = "Count", y = "Sannsynlighet")
 ```
 \subsubsection{E[X]}
-Vi summerer opp hver count ganget med sannsynligheten for å finne E[X]
+Vi summerer opp hver count ganget med sannsynligheten for den counten for å finne E[X]
 
 ```{r eval=FALSE}
-sum(x*0.3)
+sum(x*negativb_y)
 ```
 
-E[X] = `r sum(x*0.3)`
+E[X] = `r sum(x*negativb_y)`
 
 \subsubsection{Var(X)}
 For å finne var(X) kjører vi bare følgende R-kode
-```{r eval=FALSE}
-var(x)
+```{r}
+e = (sum(x^2*negativb_y)-(sum(x*negativb_y))^2)
 ```
 
-Var(X) = `r var(x)`
+Var(X) = `r e`
 
 \subsubsection{P(2 < X < 7)}
 For å finne ut sannsynligheten for X mellom 2 og 7 skriver vi følgende R-kode
@@ -187,18 +248,18 @@ ggplot(data=pdf_cdf, aes(x=x, y=pby_cdf)) +
 Vi summerer opp hver count ganget med sannsynligheten for å finne E[X]
 
 ```{r eval=FALSE}
-sum(x*7.8)
+sum(x*py_pdf)
 ```
 
-E[X] = `r sum(x*7.8)`
+E[X] = `r sum(x*py_pdf)`
 
 \subsubsection{Var(X)}
 For å finne var(X) kjører vi bare følgende R-kode
-```{r eval=FALSE}
-var(x)
+```{r}
+e = (sum(x^2*py_pdf)-(sum(x*py_pdf))^2)
 ```
 
-Var(X) = `r var(x)`
+Var(X) = `r e`
 
 \subsubsection{P(2 < X < 7)}
 For å finne ut sannsynligheten for X mellom 2 og 7 skriver vi følgende R-kode
@@ -250,12 +311,11 @@ E[X] = `r sum(x*hypery_pdf)`
 
 \subsubsection{Var(X)}
 For å finne var(X) kjører vi bare følgende R-kode
-```{r eval=FALSE}
-p=30/80
-var_x = 20*p*(1 - p)*(30+50-20)/(30+50-1)
+```{r}
+e = (sum(x^2*hypery_pdf)-(sum(x*hypery_pdf))^2)
 ```
 
-Var(X) = `r var(x)`
+Var(X) = `r e`
 
 \subsubsection{P(2 < X < 7)}
 For å finne ut sannsynligheten for X mellom 2 og 7 skriver vi følgende R-kode
@@ -269,32 +329,90 @@ print(lessthan7-lessthan2)
 
 
 
-\subsection{X~Betab(3a,5a,20) for a= 2. Lag tabell over sannsynligheter for x= 0,....,20, og regn deretter ut E[X],Var(X), ogP(2 < X < 7). Plott både pdf og CDF for disse sannsynlighetsfordelingene, med a= 1,a= 2,a= 4, og a= 10, og sammenlign medtilsvarende plott for bin(20,0.375)}
-\subsubsection{Her er tabell og plot for PDF:}
+\subsection{X~Betab(3a,5a,20) for a= 2. Lag tabell over sannsynligheter for x= 0,....,20, og regn deretter ut E[X],Var(X), og P(2 < X < 7). Plott både pdf og CDF for disse sannsynlighetsfordelingene, med a= 1,a= 2,a= 4, og a= 10, og sammenlign medtilsvarende plott for bin(20,0.375)}
+\subsubsection{Her er tabell for PDF:}
 ```{r}
 library(extraDistr)
-a = 2
-betabinomy_pdf = dbbinom(x, 20, 3*a, 5*a)
+a = 1
+betabinomy1_pdf = dbbinom(x, 20, 3*a, 5*a)
 
-betabinomy_df_pdf = data.frame(x, betabinomy_pdf)
+a2 = 2
+betabinomy2_pdf = dbbinom(x, 20, 3*a2, 5*a2)
 
-betabinomy_df_pdf
+a3 = 4
+betabinomy3_pdf = dbbinom(x, 20, 3*a3, 5*a3)
+
+a4 = 10
+betabinomy4_pdf = dbbinom(x, 20, 3*a4, 5*a4)
+
+betabinomy1_df_pdf = data.frame(x, betabinomy1_pdf)
+betabinomy2_df_pdf = data.frame(x, betabinomy2_pdf)
+betabinomy3_df_pdf = data.frame(x, betabinomy3_pdf)
+betabinomy4_df_pdf = data.frame(x, betabinomy4_pdf)
+
+betabinomy1_df_pdf
 ```
+\subsubsection{Her er plot for PDF med a=1,a=2,a=4 og a=10}
 ```{r}
-ggplot(data=betabinomy_df_pdf, aes(x=x, y=betabinomy_pdf)) +
+ggplot(data=betabinomy1_df_pdf, aes(x=x, y=betabinomy1_pdf)) +
+  geom_bar(stat="identity", fill="blue") +
+  labs(x = "Count", y = "Sannsynlighet")
+
+ggplot(data=betabinomy2_df_pdf, aes(x=x, y=betabinomy2_pdf)) +
+  geom_bar(stat="identity", fill="blue") +
+  labs(x = "Count", y = "Sannsynlighet")
+
+ggplot(data=betabinomy3_df_pdf, aes(x=x, y=betabinomy3_pdf)) +
+  geom_bar(stat="identity", fill="blue") +
+  labs(x = "Count", y = "Sannsynlighet")
+
+ggplot(data=betabinomy4_df_pdf, aes(x=x, y=betabinomy4_pdf)) +
   geom_bar(stat="identity", fill="blue") +
   labs(x = "Count", y = "Sannsynlighet")
 ```
-\subsubsection{Her er tabell og plot for CDF:}
+\textbf{Her kommer plot for bin(20, 0.375)}
 ```{r}
-betabinomy_cdf = pbbinom(x, 20, 3*a, 5*a)
-
-betabinomy_df_cdf = data.frame(x, betabinomy_pdf)
-
-betabinomy_df_cdf
+ggplot(data=df, aes(x=x, y=y)) +
+  geom_bar(stat="identity", fill="blue") +
+  labs(x = "Count", y = "Sannsynlighet")
 ```
+Det vi kan se er at når a variabelen, som vi ganger med øker, så nærmer vi oss bin(20, 0.375) fordelingen.
+\subsubsection{Her er tabell for CDF:}
 ```{r}
-ggplot(data=betabinomy_df_cdf, aes(x=x, y=betabinomy_cdf)) +
+a1 = 1
+betabinomy1_cdf = pbbinom(x, 20, 3*a1, 5*a1)
+
+a2 = 2
+betabinomy2_cdf = pbbinom(x, 20, 3*a2, 5*a2)
+
+a3 = 4
+betabinomy3_cdf = pbbinom(x, 20, 3*a3, 5*a3)
+
+a4 = 10
+betabinomy4_cdf = pbbinom(x, 20, 3*a4, 5*a4)
+
+betabinomy1_df_cdf = data.frame(x, betabinomy1_cdf)
+betabinomy2_df_cdf = data.frame(x, betabinomy2_cdf)
+betabinomy3_df_cdf = data.frame(x, betabinomy3_cdf)
+betabinomy4_df_cdf = data.frame(x, betabinomy4_cdf)
+
+betabinomy1_df_cdf
+```
+\subsubsection{Her er plot for CDF med a=1,a=2,a=4 og a=10}
+```{r}
+ggplot(data=betabinomy1_df_cdf, aes(x=x, y=betabinomy1_cdf)) +
+  geom_bar(stat="identity", fill="blue") +
+  labs(x = "Count", y = "Sannsynlighet")
+
+ggplot(data=betabinomy2_df_cdf, aes(x=x, y=betabinomy2_cdf)) +
+  geom_bar(stat="identity", fill="blue") +
+  labs(x = "Count", y = "Sannsynlighet")
+
+ggplot(data=betabinomy3_df_cdf, aes(x=x, y=betabinomy3_cdf)) +
+  geom_bar(stat="identity", fill="blue") +
+  labs(x = "Count", y = "Sannsynlighet")
+
+ggplot(data=betabinomy4_df_cdf, aes(x=x, y=betabinomy4_cdf)) +
   geom_bar(stat="identity", fill="blue") +
   labs(x = "Count", y = "Sannsynlighet")
 ```
@@ -305,24 +423,203 @@ Vi summerer opp hver count ganget med sannsynligheten for å finne E[X]
 sum(x*betabinomy_pdf)
 ```
 
-E[X] = `r sum(x*betabinomy_pdf)`
+E[X] = `r sum(x*betabinomy1_pdf)`
 
 \subsubsection{Var(X)}
 For å finne var(X) kjører vi bare følgende R-kode
-```{r eval=FALSE}
-var(x)
+```{r}
+e = (sum(x^2*betabinomy2_pdf)-(sum(x*betabinomy2_pdf))^2)
 ```
 
-Var(X) = `r var(x)`
+Var(X) = `r e`
 
 \subsubsection{P(2 < X < 7)}
 For å finne ut sannsynligheten for X mellom 2 og 7 skriver vi følgende R-kode
 
 ```{r calcsomemore5}
-lessthan7 = pbbinom(6, 20, 3*a, 5*a)
-lessthan2 = pbbinom(1, 20, 3*a, 5*a)
+lessthan7 = pbbinom(6, 20, 3*a2, 5*a2)
+lessthan2 = pbbinom(1, 20, 3*a2, 5*a2)
 
 print(lessthan7-lessthan2)
 ```
 
+
+
+\subsection{Beta negativ binomisk,Bnb(a,b,k):X~Bnb(3a,7a,3)for a= 1. Lag tabell over sannsynligheter for x = 0,....,20, og plott både pdf og CDF for denne sannsynlighetsfordelingen. Regn deretter ut E[X],Var(X), og P(2 < X < 7)}
+\subsubsection{Her er tabell og plot for PDF:}
+```{r}
+a_1 = 1
+dbnbinom_y_pdf = dbnbinom(x, 3, 3*a_1, 7*a_1)
+
+dbnbinom_ydf_pdf = data.frame(x, dbnbinom_y_pdf)
+
+dbnbinom_ydf_pdf
+```
+```{r}
+ggplot(data=dbnbinom_ydf_pdf, aes(x=x, y=dbnbinom_y_pdf)) +
+  geom_bar(stat="identity", fill="blue") +
+  labs(x = "Count", y = "Sannsynlighet")
+```
+\subsubsection{Her er tabell og plot for CDF:}
+```{r}
+dbnbinom_y_cdf = pbnbinom(x, 3, 3*a_1, 7*a_1)
+
+dbnbinom_ydf_cdf = data.frame(x, dbnbinom_y_cdf)
+
+dbnbinom_ydf_cdf
+```
+```{r}
+ggplot(data=dbnbinom_ydf_cdf, aes(x=x, y=dbnbinom_y_cdf)) +
+  geom_bar(stat="identity", fill="blue") +
+  labs(x = "Count", y = "Sannsynlighet")
+```
+\subsubsection{E[X]}
+Vi summerer opp hver count ganget med sannsynligheten for å finne E[X]
+
+```{r eval=FALSE}
+sum(x*dbnbinom_y_pdf)
+```
+
+E[X] = `r sum(x*dbnbinom_y_pdf)`
+
+\subsubsection{Var(X)}
+For å finne var(X) kjører vi bare følgende R-kode
+```{r}
+e = (sum(x^2*dbnbinom_y_pdf)-(sum(x*dbnbinom_y_pdf))^2)
+```
+
+Var(X) = `r e`
+
+\subsubsection{P(2 < X < 7)}
+For å finne ut sannsynligheten for X mellom 2 og 7 skriver vi følgende R-kode
+
+```{r calcsomemore6}
+lessthan7 = pbnbinom(6, 3, 3*a_1, 7*a_1)
+lessthan2 = pbnbinom(1, 3, 3*a_1, 7*a_1)
+
+print(lessthan7-lessthan2)
+```
+
+
+
+\subsection{Plott Borel-Tanner-fordelingen med parameter u = 0.2.}
+\subsubsection{Her er plot for Borel-Tanner:}
+```{r}
+library(VGAM)
+u=0.2
+
+x = c(1:5)
+y = dbort(x, a=u)
+
+distr = data.frame(x, y)
+
+ggplot(distr,aes(x,y))+ geom_bar(stat = "identity")
+```
+
+
+
+\subsection{Plott Logaritmisk fordeling med parameter p = 0.5}
+\subsubsection{Her er plot for Logaritmisk fordeling:}
+```{r}
+library(VGAM)
+
+x = c(1:5)
+
+y = dlog(x, 0.5)
+
+distri = data.frame(x,y)
+
+ggplot(distri, aes(x=x,y=y)) + geom_bar(stat="identity", fill="blue") +
+  labs(x = "Count", y = "Sannsynlighet")
+```
+
+
+
+\subsection{Plott Skellam-fordelingen med parametere lambda1 = 3 og lambda2 = 5}
+\subsubsection{Her er plot for Skellam-fordelingen:}
+```{r}
+library(skellam)
+
+N = 5000
+lambda1 = 3
+lambda2 = 5
+
+X = rpois(N, lambda1)
+Y = rpois(N, lambda2)
+XminusY = X - Y
+
+Z = rskellam(N, lambda1, lambda2)
+
+plot(table(XminusY), xlab="X - Y", ylab="", type="p", pch=1)
+
+points(table(Z), col="red", type="p", pch=3, cex=2)
+```
+
+
+\newpage
+\section{Tilfedlige sannsynlighetsfordelinger}
+
+\subsection{For å bruke kumar distribusjonen må vi bruke pakken "extraDistr"}
+```{r}
+library(extraDistr)
+
+x <- rkumar(1e5, 3, 2)
+hist(x, 100, freq = FALSE)
+curve(dkumar(x, 3, 2), 0, 1, col = "red", add = TRUE)
+```
+
+
+\subsection{For å bruke arcsine-fordelineg må vi bruke pakken "VaRES"}
+```{r srcc}
+library(ggplot2)
+library(VaRES)
+x=runif(1000,min=-pi,max=pi)
+y = darcsine(x, a=-pi, b=pi)
+df = data.frame(x,y)
+subset = df[df$x>=-2,]
+subset = subset[subset$x<=2,]
+ggplot(df, aes(x,y))+geom_area()+geom_area(fill="blue",data=subset)
+```
+
+
+\subsection{For å bruke truncnorm må vi installere pakken "truncnorm"}
+```{r trnucnorm}
+library(truncnorm)
+x=runif(1000, min = 0, max = 20)
+y = dtruncnorm(x, a=6, b=12, mean = 5, sd = 3)
+df = data.frame(x, y)
+
+subset = df[df$x>=9,]
+subset = subset[subset$x<=11,]
+
+ggplot(df, aes(x,y))+geom_area()+geom_area(fill="blue",data=subset)
+```
+
+
+\subsection{For å bruke vonMises må vi installere pakken "circular"}
+```{r vonmises}
+library(circular)
+library(ggfortify)
+
+p=ggdistribution(pvonmises,seq(-2,4.3,0.001),mu=1.2,kappa=2,colour =
+"black")
+p=ggdistribution(pvonmises,seq(-2,4.3,0.001),mu=1.2,kappa=0.5,colour =
+"red",p=p)
+p=ggdistribution(pvonmises,seq(-2,4.3,0.001),mu=1.2,kappa=0.01,colour =
+"black",p=p)
+ggdistribution(pvonmises,seq(-2,4.3,0.001),mu=1.2,kappa=0.00001,colour =
+"pink",p=p)
+
+```
+
+
+\subsection{For å kjøre den brettede normalfordelingen må vi installere pakken "VGAM"}
+Område i blått er P(U > 2)
+```{r}
+library(VGAM)
+d = pfoldnorm(2,mean = 7, sd=4,a1=1,a2=1,lower.tail = FALSE)
+d # 0.9065747
+p = ggdistribution(dfoldnorm,seq(-5,20,0.01),mean=7,sd=4,a1=1,a2=1)
+ggdistribution(dfoldnorm,seq(d,20,0.01),mean=7,sd=4,a1=1,a2=1,fill="blue",p=p)
+```
 
