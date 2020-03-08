@@ -269,12 +269,12 @@ print(lessthan7-lessthan2)
 
 
 
-\subsection{X~Betab(3a,5a,20)for a= 2. Lag tabell over sannsynligheter for x= 0,....,20, og regn deretter ut E[X],Var(X), ogP(2 < X < 7). Plott både pdf og CDF for disse sannsynlighetsfordelingene, meda= 1,a= 2,a= 4, og a= 10, og sammenlign medtilsvarende plott for bin(20,0.375)}
+\subsection{X~Betab(3a,5a,20) for a= 2. Lag tabell over sannsynligheter for x= 0,....,20, og regn deretter ut E[X],Var(X), ogP(2 < X < 7). Plott både pdf og CDF for disse sannsynlighetsfordelingene, med a= 1,a= 2,a= 4, og a= 10, og sammenlign medtilsvarende plott for bin(20,0.375)}
 \subsubsection{Her er tabell og plot for PDF:}
 ```{r}
 library(extraDistr)
-
-betabinomy_pdf = dbbinom(x, 20, 3, 5)
+a = 2
+betabinomy_pdf = dbbinom(x, 20, 3*a, 5*a)
 
 betabinomy_df_pdf = data.frame(x, betabinomy_pdf)
 
@@ -285,8 +285,44 @@ ggplot(data=betabinomy_df_pdf, aes(x=x, y=betabinomy_pdf)) +
   geom_bar(stat="identity", fill="blue") +
   labs(x = "Count", y = "Sannsynlighet")
 ```
+\subsubsection{Her er tabell og plot for CDF:}
+```{r}
+betabinomy_cdf = pbbinom(x, 20, 3*a, 5*a)
 
+betabinomy_df_cdf = data.frame(x, betabinomy_pdf)
 
+betabinomy_df_cdf
+```
+```{r}
+ggplot(data=betabinomy_df_cdf, aes(x=x, y=betabinomy_cdf)) +
+  geom_bar(stat="identity", fill="blue") +
+  labs(x = "Count", y = "Sannsynlighet")
+```
+\subsubsection{E[X]}
+Vi summerer opp hver count ganget med sannsynligheten for å finne E[X]
 
+```{r eval=FALSE}
+sum(x*betabinomy_pdf)
+```
+
+E[X] = `r sum(x*betabinomy_pdf)`
+
+\subsubsection{Var(X)}
+For å finne var(X) kjører vi bare følgende R-kode
+```{r eval=FALSE}
+var(x)
+```
+
+Var(X) = `r var(x)`
+
+\subsubsection{P(2 < X < 7)}
+For å finne ut sannsynligheten for X mellom 2 og 7 skriver vi følgende R-kode
+
+```{r calcsomemore5}
+lessthan7 = pbbinom(6, 20, 3*a, 5*a)
+lessthan2 = pbbinom(1, 20, 3*a, 5*a)
+
+print(lessthan7-lessthan2)
+```
 
 
